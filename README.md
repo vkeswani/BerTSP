@@ -12,6 +12,23 @@ The task of Sentence Ordering refers to rearranging a set of given sentences in 
 ### Datasets
 SIND (only SIS is relevant): https://visionandlanguage.net/VIST/dataset.html <br>
 NIPS, AAN, NSF abstracts: https://ojs.aaai.org/index.php/AAAI/article/view/11997 
+### Directory structure
+--Sentence_Ordering
+----SIND
+------sind
+------sind_bert
+------sind_data
+----NIPS
+------nips
+--------split
+--------txt_tokenized
+------nips_bert
+------nips_data
+----AAN
+----NSF
+----prepare_data.py 
+----model.py 
+----graph_decoder.py
 ### Code
 Given a set or unordered sentences, we calculate probability of each ordered sentence-pair using BertForSequenceClassification. We construct a matrix with these probabilities which serves as input for the Travelling Salesman Problem. Since sentence A followed by sentence B has a different input representation than sentence B followed by sentence A, the matrix is asymmetric. We then solve the ATSP via exact and heuristic methods. 
 
@@ -22,5 +39,17 @@ Files:
 
 prepare_data.py for topo and tsp separate,topological_sort.py,tsp.py args for exact and heuristics
 
+`python prepare_data.py --data_dir nips/ --out_dir nips_data/ --task_name nips` <br>
+`python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/ --do_test --per_gpu_eval_batch_size 16` <br>
+`python topological_sort.py --file_path nips_data/test_results.tsv` <br>
+Different modes of decoding: 
+- Topological Sort `--TopoS`
+-- `--correct` or `--reverse`
+--- `--cyclic` or `--non_cyclic` or `--all`
+e.g.: `python graph_decoder.py --file_path nips_data/ --TopoS --reverse --all`
+- TSP `--TSP`
+-- `--exact` or `--approx` or `--ensemble` (to specify sequence length upto which exact should be used, specify `--exact_upto`, beyond which approx is used)
+--- `--cyclic` or `--non_cyclic` or `--all`
+e.g.: `python graph_decoder.py --file_path nips_data/ --TSP --ensemble --non-cyclic` <br>
 
 
