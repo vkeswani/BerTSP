@@ -30,8 +30,9 @@ NIPS, AAN, NSF abstracts: https://ojs.aaai.org/index.php/AAAI/article/view/11997
 |________prepare_data.py  <br> 
 |________model.py  <br>
 |________graph_decoder.py  <br>
+
 ### Code
-Given a set or unordered sentences, we calculate probability of each ordered sentence-pair using BertForSequenceClassification. We construct a matrix with these probabilities which serves as input for the Travelling Salesman Problem. Since sentence A followed by sentence B has a different input representation than sentence B followed by sentence A, the matrix is asymmetric. We then solve the ATSP via exact and heuristic methods. 
+Given a set of unordered sentences, we calculate the probability of each ordered sentence-pair using BertForSequenceClassification. We construct a matrix with these probabilities which serves as input for the Traveling Salesman Problem. Since sentence A followed by sentence B has a different input representation than sentence B followed by sentence A, the matrix is asymmetric. We then solve the ATSP via exact and heuristic methods. 
 
 1. The code and trained BERT models for calculating sentence-pair probabilities are taken from https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering.
 2. The code for solving ATSP (exact and heuristic) is provided here. 
