@@ -1,5 +1,5 @@
 # BerTSP
-## Formulating Sentence Ordering as the Asymmetric Travelling Salesman Problem
+## Formulating Neural Sentence Ordering as the Asymmetric Traveling Salesman Problem
 **Authors**: Vishal Keswani & Harsh Jhamtani
 
 This repository describes the code for our work on Sentence Ordering as ATSP presented at INLG 2021. 
@@ -38,7 +38,7 @@ Given a set or unordered sentences, we calculate probability of each ordered sen
 
 
 prepare_data.py for topo and tsp separate,topological_sort.py,tsp.py args for exact and heuristics
-### Data preparation
+#### Data preparation
 Prepare data for training, development and testing: <br>
 `python prepare_data.py --data_dir nips/ --out_dir nips_data/ --task_name nips` <br>
 Output: train.tsv, dev.tsv, test_TopoSort.tsv, test_TSP.tsv <br>
@@ -47,12 +47,12 @@ When using pretrained models, prepare data for testing only: <br>
 `python prepare_data.py --data_dir nips/ --out_dir nips_data/ --task_name nips --test_only` <br>
 Output: test_TopoSort.tsv, test_TSP.tsv <br>
 
-### Training
+#### Training
 Training custom models: <br>
 `python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/ --do_train --per_gpu_eval_batch_size 16` <br>
 Output: checkpoints ___ <br>
 
-### Inference from sentence-pair classifier
+#### Inference from sentence-pair classifier
 Running inference using pretrained models: <br>
 `python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/ --do_test --per_gpu_eval_batch_size 16` <br>
 Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
@@ -62,7 +62,7 @@ Running inference using custom trained models: <br>
 Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
 
 `python topological_sort.py --file_path nips_data/test_results.tsv` <br>
-### Decoding the order via graph traversal
+#### Decoding the order via graph traversal
 Different modes of decoding:  <br>
 - Topological Sort: `--TopoSort`  <br>
 --> Input indexing: `--correct` or `--reverse` or `--shuffled`  <br>
