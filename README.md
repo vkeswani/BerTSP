@@ -12,44 +12,66 @@ The task of Sentence Ordering refers to rearranging a set of given sentences in 
 ### Datasets
 SIND (only SIS is relevant): https://visionandlanguage.net/VIST/dataset.html <br>
 NIPS, AAN, NSF abstracts: https://ojs.aaai.org/index.php/AAAI/article/view/11997 
-### Directory structure
---Sentence_Ordering
-----SIND
-------sind
-------sind_bert
-------sind_data
-----NIPS
-------nips
---------split
---------txt_tokenized
-------nips_bert
-------nips_data
-----AAN
-----NSF
-----prepare_data.py 
-----model.py 
-----graph_decoder.py
+### Directory structure used
+|____Sentence_Ordering  <br>
+|________SIND  <br>
+|____________sind  <br>
+|________________sis?  <br>
+|____________sind_bert  <br>
+|____________sind_data  <br>
+|_______NIPS  <br>
+|___________nips  <br>
+|_______________split  <br>
+|_______________txt_tokenized  <br>
+|____________nips_bert  <br>
+|____________nips_data  <br>
+|________AAN  *(same as NIPS)*<br>
+|________NSF  *(same as NIPS)*<br>
+|________prepare_data.py  <br> 
+|________model.py  <br>
+|________graph_decoder.py  <br>
 ### Code
 Given a set or unordered sentences, we calculate probability of each ordered sentence-pair using BertForSequenceClassification. We construct a matrix with these probabilities which serves as input for the Travelling Salesman Problem. Since sentence A followed by sentence B has a different input representation than sentence B followed by sentence A, the matrix is asymmetric. We then solve the ATSP via exact and heuristic methods. 
 
 1. The code and trained BERT models for calculating sentence-pair probabilities are taken from https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering.
 2. The code for solving ATSP (exact and heuristic) is provided here. 
 
-Files:
 
 prepare_data.py for topo and tsp separate,topological_sort.py,tsp.py args for exact and heuristics
-
+### Data preparation
+Prepare data for training, development and testing: <br>
 `python prepare_data.py --data_dir nips/ --out_dir nips_data/ --task_name nips` <br>
+Output: train.tsv, dev.tsv, test_TopoSort.tsv, test_TSP.tsv <br>
+
+When using pretrained models, prepare data for testing only: <br>
+`python prepare_data.py --data_dir nips/ --out_dir nips_data/ --task_name nips --test_only` <br>
+Output: test_TopoSort.tsv, test_TSP.tsv <br>
+
+### Training
+Training custom models: <br>
+`python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/ --do_train --per_gpu_eval_batch_size 16` <br>
+Output: checkpoints ___ <br>
+
+### Inference from sentence-pair classifier
+Running inference using pretrained models: <br>
 `python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/ --do_test --per_gpu_eval_batch_size 16` <br>
+Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
+
+Running inference using custom trained models: <br>
+`python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/checkpoint-XXXX/ --do_test --per_gpu_eval_batch_size 16` <br>
+Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
+
 `python topological_sort.py --file_path nips_data/test_results.tsv` <br>
-Different modes of decoding: 
-- Topological Sort `--TopoS`
--- `--correct` or `--reverse`
---- `--cyclic` or `--non_cyclic` or `--all`
-e.g.: `python graph_decoder.py --file_path nips_data/ --TopoS --reverse --all`
-- TSP `--TSP`
--- `--exact` or `--approx` or `--ensemble` (to specify sequence length upto which exact should be used, specify `--exact_upto`, beyond which approx is used)
---- `--cyclic` or `--non_cyclic` or `--all`
-e.g.: `python graph_decoder.py --file_path nips_data/ --TSP --ensemble --non-cyclic` <br>
+### Decoding the order via graph traversal
+Different modes of decoding:  <br>
+- Topological Sort: `--TopoSort`  <br>
+--> Input indexing: `--correct` or `--reverse` or `--shuffled`  <br>
+--> Subset of data: `--cyclic` or `--non_cyclic` or `--all`  <br>
+e.g.: `python graph_decoder.py --file_path nips_data/ --TopoSort --reverse --all`  <br><br>
+- TSP: `--TSP`  <br>
+--> TSP solution: `--exact` or `--approx` or `--ensemble` <br>
+(to specify sequence length upto which exact should be used, specify `--exact_upto`, beyond which approx is used)  <br>
+--> Subset of data: `--cyclic` or `--non_cyclic` or `--all`  <br>
+e.g.: `python graph_decoder.py --file_path nips_data/ --TSP --approx --cyclic` <br>
 
 
