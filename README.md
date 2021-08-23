@@ -64,6 +64,16 @@ Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
 
 `python topological_sort.py --file_path nips_data/test_results.tsv` <br>
 #### Decoding the order via graph traversal
+Parameters: <br>
+1. file_path: (required) path to input data directory <br>
+2. decoder: (default - TopoSort) TopoSort/TSP <br>
+3. indexing: (default - reverse) correct/reverse/shuffled <br>
+4. subset: (default - all) cyclic/non_cyclic/all <br>
+5. tsp_solver: (default - approx) approx/ensemble/exact <br>
+6. exact_upto: (default - 8) if exact or ensemble is chosen, upto how many sentences (or sequence length) should exact tsp be used, recommended upto 8 in general (upto 10 for small datasets) <br>
+`python graph_decoder.py --file_path ../nips_data/` <br>
+`python graph_decoder.py --file_path ../nips_data/ --decoder TSP` <br>
+`python graph_decoder.py --file_path ../nips_data/ --decoder TSP --indexing reverse --subset cyclic --tsp_solver ensemble --exact_upto 6` <br>
 Different modes of decoding:  <br>
 - Topological Sort: `--TopoSort`  <br>
 --> Input indexing: `--correct` or `--reverse` or `--shuffled`  <br>
