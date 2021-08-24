@@ -13,6 +13,10 @@ The task of Sentence Ordering refers to rearranging a set of given sentences in 
 SIND (only SIS is relevant): https://visionandlanguage.net/VIST/dataset.html <br>
 NIPS, AAN, NSF abstracts: https://ojs.aaai.org/index.php/AAAI/article/view/11997 
 
+## Requirements
+transformers
+torch
+
 ## Directory structure used
 |___Sentence_Ordering  <br>
 &emsp;&emsp;|___SIND  <br>
