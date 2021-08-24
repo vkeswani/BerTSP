@@ -152,7 +152,7 @@ def train(args, train_dataset, model, tokenizer):
                       'token_type_ids': batch[2],
                       'labels':         batch[3]
                     }
-            
+
             outputs = model(**inputs)
             loss = outputs[0]  # model outputs are always tuple in transformers (see doc)
 
@@ -223,7 +223,7 @@ class MyTestDataset(Dataset):
     def __getitem__(self, idx):
         return (self.tensor_data[idx], self.rows[idx])
     
-def evaluate_test(args, model, tokenizer, prefix="", decoder):
+def evaluate_test(args, model, tokenizer, decoder, prefix=""):
     
     if args.local_rank not in [-1, 0] and not evaluate:
         torch.distributed.barrier()  # Make sure only the first process in distributed training process the dataset, and the others will use the cache
@@ -245,8 +245,8 @@ def evaluate_test(args, model, tokenizer, prefix="", decoder):
         logger.info("Creating features from dataset file at %s", args.data_dir)
         label_list = processor.get_labels()
 
-        if decoder == 'TopoSort': examples, lines = processor.get_test_examples_TopoSort(args.data_dir)
-        elif decoder == 'TSP': examples, lines = processor.get_test_examples_TSP(args.data_dir)
+        if decoder=='TopoSort': examples, lines = processor.get_test_examples_TopoSort(args.data_dir)
+        elif decoder=='TSP': examples, lines = processor.get_test_examples_TSP(args.data_dir)
         features = convert_examples_to_features(
             examples,
             tokenizer,
@@ -274,7 +274,7 @@ def evaluate_test(args, model, tokenizer, prefix="", decoder):
         [f.attention_mask for f in features], dtype=torch.long)
     all_token_type_ids = torch.tensor(
         [f.token_type_ids for f in features], dtype=torch.long)
-    all_labels = torch.tensor([f.label for f in features], dtype=torch.float)
+    all_labels = torch.tensor([f.label for f in features], dtype=torch.long)
 
     dataset = TensorDataset(
         all_input_ids, 
@@ -285,9 +285,9 @@ def evaluate_test(args, model, tokenizer, prefix="", decoder):
 
     
     eval_outputs_dirs = (args.output_dir,)
-    file_h = codecs.open(args.data_dir + "test_results1.tsv", "w", "utf-8")
+    file_h = codecs.open(args.data_dir + "test_results_"+decoder+".tsv", "w", "utf-8")
     outF = csv.writer(file_h, delimiter='\t')
-    
+
     results = {}
     for eval_output_dir in eval_outputs_dirs:
         eval_dataset = MyTestDataset(dataset, lines)
@@ -339,7 +339,6 @@ def evaluate_test(args, model, tokenizer, prefix="", decoder):
             nb_eval_steps += 1
             logits = logits.detach().cpu().numpy()
             tmp_pred = np.argmax(logits, axis=1)
-            
             for widx in range(logits.shape[0]):
                 outF.writerow([rows['guid'][widx], rows['text_a'][widx], \
                 rows['text_b'][widx], rows['labels'][widx], \
@@ -351,10 +350,10 @@ def evaluate_test(args, model, tokenizer, prefix="", decoder):
             else:
                 preds = np.append(preds, logits, axis=0)
                 out_label_ids = np.append(out_label_ids, inputs['labels'].detach().cpu().numpy(), axis=0)
-          
+
         eval_loss = eval_loss / nb_eval_steps
         preds = np.argmax(preds, axis=1)
-        
+
         result = compute_metrics("mnli", preds, out_label_ids)
         results.update(result)
 
@@ -436,7 +435,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False):
         torch.distributed.barrier()  
 
     processor = PairProcessor()
-    output_mode = 'regression'
+    output_mode = 'classification'
     
     cached_features_file = os.path.join(
         args.data_dir, 'cached_{}_{}_{}_{}'.format(
@@ -481,7 +480,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False):
         [f.token_type_ids for f in features], dtype=torch.long)
 
     all_labels = torch.tensor(
-        [f.label for f in features], dtype=torch.float)
+        [f.label for f in features], dtype=torch.long)
 
     dataset = TensorDataset(
         all_input_ids, all_attention_mask, all_token_type_ids, all_labels)
@@ -510,7 +509,7 @@ class PairProcessor(DataProcessor):
     
     def get_labels(self):
         """See base class."""
-        return ["0","1"]
+        return ["0", "1"]
 
     def _create_examples(self, lines, set_type):
         """Creates examples for the training and dev sets."""
@@ -668,8 +667,8 @@ def main():
     _, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
     
     tokenizer = tokenizer_class.from_pretrained('bert-base-uncased')
-    model = model_class.from_pretrained('bert-base-uncased')#,num_labels=1)
-    
+    model = model_class.from_pretrained('bert-base-uncased')
+
     if args.local_rank == 0:
         torch.distributed.barrier()  
 
@@ -724,10 +723,11 @@ def main():
             model = model_class.from_pretrained(checkpoint)
             model.to(args.device)
             if args.do_test:
-                result = evaluate_test(args, model, tokenizer, prefix=global_step, 'TopoSort')
-                result_ = evaluate_test(args, model, tokenizer, prefix=global_step,'TSP')
+                result = evaluate_test(args, model, tokenizer, 'TopoSort', prefix=global_step)
+                result_ = evaluate_test(args, model, tokenizer, 'TSP', prefix=global_step)
             elif args.do_eval:
                 result = evaluate(args, model, tokenizer, prefix=global_step)
+                
             result = dict((k + '_{}'.format(global_step), v) for k, v in result.items())
             results.update(result)
 
