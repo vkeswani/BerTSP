@@ -13,23 +13,23 @@ The task of Sentence Ordering refers to rearranging a set of given sentences in 
 SIND (only SIS is relevant): https://visionandlanguage.net/VIST/dataset.html <br>
 NIPS, AAN, NSF abstracts: https://ojs.aaai.org/index.php/AAAI/article/view/11997 
 ### Directory structure used
-|____Sentence_Ordering  <br>
-|________SIND  <br>
-|____________sind  <br>
-|________________sis?  <br>
-|____________sind_bert  <br>
-|____________sind_data  <br>
-|_______NIPS  <br>
-|___________nips  <br>
-|_______________split  <br>
-|_______________txt_tokenized  <br>
-|____________nips_bert  <br>
-|____________nips_data  <br>
-|________AAN  *(same as NIPS)*<br>
-|________NSF  *(same as NIPS)*<br>
-|________prepare_data.py  <br> 
-|________model.py  <br>
-|________graph_decoder.py  <br>
+|___Sentence_Ordering  <br>
+&emsp;&emsp;|___SIND  <br>
+&emsp;&emsp;&emsp;&emsp;|___sind  <br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|___sis?  <br>
+&emsp;&emsp;&emsp;&emsp;|___sind_bert  <br>
+&emsp;&emsp;&emsp;&emsp;|___sind_data  <br>
+&emsp;&emsp;|___NIPS  <br>
+&emsp;&emsp;&emsp;&emsp;|___nips  <br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|___split  <br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|___txt_tokenized  <br>
+&emsp;&emsp;&emsp;&emsp;|___nips_bert  <br>
+&emsp;&emsp;&emsp;&emsp;|___nips_data  <br>
+&emsp;&emsp;|___AAN  *(same as NIPS)*<br>
+&emsp;&emsp;|___NSF  *(same as NIPS)*<br>
+&emsp;&emsp;|___prepare_data.py  <br> 
+&emsp;&emsp;|___model.py  <br>
+&emsp;&emsp;|___graph_decoder.py  <br>
 
 ### Code
 Given a set of unordered sentences, we calculate the probability of each ordered sentence-pair using BertForSequenceClassification. We construct a matrix with these probabilities which serves as input for the Traveling Salesman Problem. Since sentence A followed by sentence B has a different input representation than sentence B followed by sentence A, the matrix is asymmetric. We then solve the ATSP via exact and heuristic methods. 
