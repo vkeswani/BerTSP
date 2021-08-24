@@ -16,8 +16,7 @@ NIPS, AAN, NSF abstracts: https://ojs.aaai.org/index.php/AAAI/article/view/11997
 ## Directory structure used
 |___Sentence_Ordering  <br>
 &emsp;&emsp;|___SIND  <br>
-&emsp;&emsp;&emsp;&emsp;|___sind  <br>
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|___sis?  <br>
+&emsp;&emsp;&emsp;&emsp;|___sis  <br>
 &emsp;&emsp;&emsp;&emsp;|___sind_bert  <br>
 &emsp;&emsp;&emsp;&emsp;|___sind_data  <br>
 &emsp;&emsp;|___NIPS  <br>
@@ -58,7 +57,7 @@ Running inference using pretrained models: <br>
 Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
 
 Running inference using custom trained models: <br>
-`python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/checkpoint-XXXX/ --do_test --per_gpu_eval_batch_size 16` <br>
+`python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/checkpoint-X/ --do_test --per_gpu_eval_batch_size 16` <br>
 Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
 
 ### Decoding the order via graph traversal
