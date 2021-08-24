@@ -39,25 +39,27 @@ Given a set of unordered sentences, we calculate the probability of each ordered
 
 ### Data preparation
 Prepare data for training, development and testing: <br>
-`python prepare_data_modified.py --data_dir nips/ --out_dir nips_data/ --task_name nips` <br>
+`python prepare_data_modified.py --data_dir ../sis/ --out_dir ../sind_data/ --task_name sind` <br>
+`python prepare_data_modified.py --data_dir ../nips/ --out_dir ../nips_data/ --task_name nips` <br>
 Output: train.tsv, dev.tsv, test_TopoSort.tsv, test_TSP.tsv <br>
 
 When using pretrained models, prepare data for testing only: <br>
-`python prepare_data_modified.py --data_dir nips/ --out_dir nips_data/ --task_name nips --test_only` <br>
+`python prepare_data_modified.py --data_dir ../nips/ --out_dir ../nips_data/ --task_name nips --test_only` <br>
 Output: test_TopoSort.tsv, test_TSP.tsv <br>
 
 ### Training
 Training custom models: <br>
-`python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/ --do_train --per_gpu_eval_batch_size 16` <br>
-Output: checkpoints ___ <br>
+`mkdir ../sind_bert`
+`python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --do_train --do_eval --per_gpu_eval_batch_size 16` <br>
+Output: checkpoint-2000, checkpoint-4000, etc <br>
 
 ### Inference from sentence-pair classifier
 Running inference using pretrained models: <br>
-`python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/ --do_test --per_gpu_eval_batch_size 16` <br>
+`python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --do_test --per_gpu_eval_batch_size 16` <br>
 Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
 
 Running inference using custom trained models: <br>
-`python model.py --data_dir ../sind_data/ --output_dir ../trained_models/sind_bert/checkpoint-X/ --do_test --per_gpu_eval_batch_size 16` <br>
+`python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/checkpoint-X/ --do_test --per_gpu_eval_batch_size 16` <br>
 Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
 
 ### Decoding the order via graph traversal
