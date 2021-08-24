@@ -39,11 +39,11 @@ Given a set of unordered sentences, we calculate the probability of each ordered
 
 ### Data preparation
 Prepare data for training, development and testing: <br>
-`python prepare_data.py --data_dir nips/ --out_dir nips_data/ --task_name nips` <br>
+`python prepare_data_modified.py --data_dir nips/ --out_dir nips_data/ --task_name nips` <br>
 Output: train.tsv, dev.tsv, test_TopoSort.tsv, test_TSP.tsv <br>
 
 When using pretrained models, prepare data for testing only: <br>
-`python prepare_data.py --data_dir nips/ --out_dir nips_data/ --task_name nips --test_only` <br>
+`python prepare_data_modified.py --data_dir nips/ --out_dir nips_data/ --task_name nips --test_only` <br>
 Output: test_TopoSort.tsv, test_TSP.tsv <br>
 
 ### Training
