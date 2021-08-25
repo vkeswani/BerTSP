@@ -38,42 +38,69 @@ torch
 ## Code
 Given a set of unordered sentences, we calculate the probability of each ordered sentence-pair using BertForSequenceClassification. We construct a matrix with these probabilities which serves as input for the Traveling Salesman Problem. Since sentence A followed by sentence B has a different input representation than sentence B followed by sentence A, the matrix is asymmetric. We then solve the ATSP via exact and heuristic methods. 
 
-1. The code and trained BERT models for calculating sentence-pair probabilities are taken from https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering.
-2. The code for solving ATSP (exact and heuristic) is provided here. 
+1. The code is based on this [repo](https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering) by @shrimai.
+2. The [trained BERT models](https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering#trained-models) for calculating sentence-pair probabilities are also available in this repo. 
 
-### Data preparation
+### 1. Data preparation
 Prepare data for training, development and testing: <br>
-`python prepare_data_modified.py --data_dir ../sis/ --out_dir ../sind_data/ --task_name sind` <br>
-`python prepare_data_modified.py --data_dir ../nips/ --out_dir ../nips_data/ --task_name nips` <br>
+```
+python prepare_data_modified.py --data_dir ../sis/ --out_dir ../sind_data/ --task_name sind
+```
+```
+python prepare_data_modified.py --data_dir ../nips/ --out_dir ../nips_data/ --task_name nips
+```
 Output: train.tsv, dev.tsv, test_TopoSort.tsv, test_TSP.tsv <br>
 
 When using pretrained models, prepare data for testing only: <br>
-`python prepare_data_modified.py --data_dir ../nips/ --out_dir ../nips_data/ --task_name nips --test_only` <br>
+```
+python prepare_data_modified.py --data_dir ../nips/ --out_dir ../nips_data/ --task_name nips --test_only
+```
 Output: test_TopoSort.tsv, test_TSP.tsv <br>
 
-### Training
+### 2. Training the sentence-pair classifier
 Training custom models: <br>
-`mkdir ../sind_bert`
-`python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --do_train --do_eval --per_gpu_eval_batch_size 16` <br>
+```
+mkdir ../sind_bert
+```
+```
+python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --do_train --do_eval --per_gpu_eval_batch_size 16
+```
 Output: checkpoint-2000, checkpoint-4000, etc <br>
 
-### Inference from sentence-pair classifier
+### 3. Inference from the sentence-pair classifier
 Running inference using pretrained models: <br>
-`python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --do_test --per_gpu_eval_batch_size 16` <br>
+```
+python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --do_test --per_gpu_eval_batch_size 16
+```
 Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
 
 Running inference using custom trained models: <br>
-`python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/checkpoint-X/ --do_test --per_gpu_eval_batch_size 16` <br>
+```
+python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/checkpoint-X/ --do_test --per_gpu_eval_batch_size 16
+```
 Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
 
-### Decoding the order via graph traversal
+### 4. Decoding the order via graph traversal
 Parameters: <br>
-1. file_path: (required) path to input data directory <br>
-2. decoder: (default - TopoSort) TopoSort/TSP <br>
-3. indexing: (default - reverse) correct/reverse/shuffled <br>
-4. subset: (default - all) cyclic/non_cyclic/all <br>
+1. file_path:  (required) path to input data directory <br>
+2. decoder:    (default - TopoSort) TopoSort/TSP <br>
+3. indexing:   (default - reverse) correct/reverse/shuffled <br>
+4. subset:     (default - all) cyclic/non_cyclic/all <br>
 5. tsp_solver: (default - approx) approx/ensemble/exact <br>
-6. exact_upto: (default - 8) if exact or ensemble is chosen, upto how many sentences (or sequence length) should exact tsp be used, recommended upto 8 in general (upto 10 for small datasets) <br><br>
-e.g.: `python graph_decoder.py --file_path ../nips_data/` <br>
-e.g.: `python graph_decoder.py --file_path ../nips_data/ --decoder TSP` <br>
-e.g.: `python graph_decoder.py --file_path ../nips_data/ --decoder TSP --indexing reverse --subset cyclic --tsp_solver ensemble --exact_upto 6` <br>
+6. exact_upto: (default - 8) if exact or ensemble is chosen, upto how many sentences (or sequence length) should exact tsp be used, recommended upto 8 in general (upto 10 for small datasets) <br>
+
+Examples:
+```
+python graph_decoder.py --file_path ../nips_data/
+``` 
+```
+python graph_decoder.py --file_path ../nips_data/ --decoder TSP
+```
+```
+python graph_decoder.py --file_path ../nips_data/ --decoder TSP --indexing reverse --subset cyclic --tsp_solver ensemble --exact_upto 6
+```
+
+## BibTeX
+Use the following to cite the paper or code.<br>
+**Citation will be added soon.**
+
