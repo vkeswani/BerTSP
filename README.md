@@ -30,13 +30,13 @@ Given a set of unordered sentences, we calculate the probability of each 'ordere
 |___Sentence_Ordering  <br>
 &emsp;&emsp;|___SIND  <br>
 &emsp;&emsp;&emsp;&emsp;|___sis  *(comes from https://visionandlanguage.net/VIST/dataset.html)* <br>
-&emsp;&emsp;&emsp;&emsp;|___sind_bert *(comes from https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering#trained-models)* <br>
+&emsp;&emsp;&emsp;&emsp;|___sind_bert *(comes from [trained BERT models](https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering#trained-models)* <br>
 &emsp;&emsp;&emsp;&emsp;|___sind_data  <br>
 &emsp;&emsp;|___NIPS  <br>
-&emsp;&emsp;&emsp;&emsp;|___nips *(comes from data link provided by author of https://ojs.aaai.org/index.php/AAAI/article/view/11997)* <br>
+&emsp;&emsp;&emsp;&emsp;|___nips *(comes from data link provided by author of [this paper](https://ojs.aaai.org/index.php/AAAI/article/view/11997))* <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|___split  <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|___txt_tokenized  <br>
-&emsp;&emsp;&emsp;&emsp;|___nips_bert *(comes from https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering#trained-models)*  <br>
+&emsp;&emsp;&emsp;&emsp;|___nips_bert *(comes from [trained BERT models](https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering#trained-models)*  <br>
 &emsp;&emsp;&emsp;&emsp;|___nips_data  <br>
 &emsp;&emsp;|___AAN  *(same as NIPS)*<br>
 &emsp;&emsp;|___NSF  *(same as NIPS)*<br>
