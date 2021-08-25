@@ -49,13 +49,13 @@ python prepare_data_modified.py --data_dir ../sis/ --out_dir ../sind_data/ --tas
 ```
 python prepare_data_modified.py --data_dir ../nips/ --out_dir ../nips_data/ --task_name nips
 ```
-Output: train.tsv, dev.tsv, test_TopoSort.tsv, test_TSP.tsv <br>
+Output: `train.tsv`, `dev.tsv`,`test_TopoSort.tsv`, `test_TSP.tsv` <br>
 
 When using pretrained models, prepare data for testing only: <br>
 ```
 python prepare_data_modified.py --data_dir ../nips/ --out_dir ../nips_data/ --task_name nips --test_only
 ```
-Output: test_TopoSort.tsv, test_TSP.tsv <br>
+Output: `test_TopoSort.tsv`, `test_TSP.tsv` <br>
 
 ### 2. Training the sentence-pair classifier
 Training custom models: <br>
@@ -65,20 +65,20 @@ mkdir ../sind_bert
 ```
 python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --do_train --do_eval --per_gpu_eval_batch_size 16
 ```
-Output: checkpoint-2000, checkpoint-4000, etc <br>
+Output: `checkpoint-2000`, `checkpoint-4000`, etc <br>
 
 ### 3. Inference from the sentence-pair classifier
 Running inference using pretrained models: <br>
 ```
 python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --do_test --per_gpu_eval_batch_size 16
 ```
-Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
+Output: `test_results_TopoSort.tsv`, `test_results_TSP.tsv` <br>
 
 Running inference using custom trained models: <br>
 ```
 python model.py --data_dir ../sind_data/ --output_dir ../sind_bert/checkpoint-X/ --do_test --per_gpu_eval_batch_size 16
 ```
-Output: test_results_TopoSort.tsv, test_results_TSP.tsv <br>
+Output: `test_results_TopoSort.tsv`, `test_results_TSP.tsv` <br>
 
 ### 4. Decoding the order via graph traversal
 Parameters: <br>
