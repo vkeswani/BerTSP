@@ -20,17 +20,23 @@ This code works with the latest versions (8/21).
 * transformers <br>
 * tensorboardX
 
-## Directory structure used
+## Code
+Given a set of unordered sentences, we calculate the probability of each 'ordered' sentence-pair using BertForSequenceClassification. We construct a matrix with these probabilities which serves as input for the Traveling Salesman Problem. Since sentence A followed by sentence B has a different input representation than sentence B followed by sentence A, the matrix is asymmetric. We then solve the ATSP via exact and heuristic methods. 
+
+1. The code is based on [this repo](https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering) by @shrimai.
+2. The [trained BERT models](https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering#trained-models) for calculating sentence-pair probabilities are also available in this repo. 
+
+### 1. Directory structure used
 |___Sentence_Ordering  <br>
 &emsp;&emsp;|___SIND  <br>
-&emsp;&emsp;&emsp;&emsp;|___sis  <br>
-&emsp;&emsp;&emsp;&emsp;|___sind_bert  <br>
+&emsp;&emsp;&emsp;&emsp;|___sis  *(comes from https://visionandlanguage.net/VIST/dataset.html)* <br>
+&emsp;&emsp;&emsp;&emsp;|___sind_bert *(comes from https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering#trained-models)* <br>
 &emsp;&emsp;&emsp;&emsp;|___sind_data  <br>
 &emsp;&emsp;|___NIPS  <br>
-&emsp;&emsp;&emsp;&emsp;|___nips  <br>
+&emsp;&emsp;&emsp;&emsp;|___nips *(comes from data link provided by author of https://ojs.aaai.org/index.php/AAAI/article/view/11997)* <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|___split  <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|___txt_tokenized  <br>
-&emsp;&emsp;&emsp;&emsp;|___nips_bert  <br>
+&emsp;&emsp;&emsp;&emsp;|___nips_bert *(comes from https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering#trained-models)*  <br>
 &emsp;&emsp;&emsp;&emsp;|___nips_data  <br>
 &emsp;&emsp;|___AAN  *(same as NIPS)*<br>
 &emsp;&emsp;|___NSF  *(same as NIPS)*<br>
@@ -38,13 +44,7 @@ This code works with the latest versions (8/21).
 &emsp;&emsp;|___model.py  <br>
 &emsp;&emsp;|___graph_decoder.py  <br>
 
-## Code
-Given a set of unordered sentences, we calculate the probability of each 'ordered' sentence-pair using BertForSequenceClassification. We construct a matrix with these probabilities which serves as input for the Traveling Salesman Problem. Since sentence A followed by sentence B has a different input representation than sentence B followed by sentence A, the matrix is asymmetric. We then solve the ATSP via exact and heuristic methods. 
-
-1. The code is based on this [repo](https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering) by @shrimai.
-2. The [trained BERT models](https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering#trained-models) for calculating sentence-pair probabilities are also available in this repo. 
-
-### 1. Data preparation
+### 2. Data preparation
 Prepare data for training, development and testing: <br>
 ```
 python prepare_data_modified.py --data_dir ../sis/ --out_dir ../sind_data/ --task_name sind
@@ -60,7 +60,7 @@ python prepare_data_modified.py --data_dir ../nips/ --out_dir ../nips_data/ --ta
 ```
 Output: `test_TopoSort.tsv`, `test_TSP.tsv` <br>
 
-### 2. Training the sentence-pair classifier
+### 3. Training the sentence-pair classifier
 Training custom models: <br>
 ```
 mkdir ../sind_bert
@@ -70,7 +70,7 @@ python model_modified.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --d
 ```
 Output: `checkpoint-2000`, `checkpoint-4000`, etc <br>
 
-### 3. Inference from the sentence-pair classifier
+### 4. Inference from the sentence-pair classifier
 Running inference using trained models: <br>
 ```
 python model_modified.py --data_dir ../sind_data/ --output_dir ../sind_bert/ --do_test --per_gpu_eval_batch_size 16
@@ -83,7 +83,7 @@ python model_modified.py --data_dir ../sind_data/ --output_dir ../sind_bert/chec
 ```
 Output: `test_results_TopoSort.tsv`, `test_results_TSP.tsv` <br>
 
-### 4. Decoding the order via graph traversal
+### 5. Decoding the order via graph traversal
 Parameters: <br>
 1. file_path:  (required) path to input data directory <br>
 2. decoder:    (default - TopoSort) TopoSort/TSP <br>
