@@ -121,7 +121,7 @@ class Stats(object):
         common = 0
         for i in range(len(order)):
           for j in range(i+1,len(order)):
-            if gold_order[order[i]]<gold_order[order[j]]:
+            if gold_order.index(order[i])<gold_order.index(order[j]):
               common+=1
         
         return common
@@ -250,19 +250,22 @@ def convert_to_graph(data_TopoSort, data_TSP, decoder, indexing, subset, tsp_sol
             elif pred == 1:
                 g.addEdge(pos_s1, pos_s2, log1) 
         
+        i1 += npairs
+        i2 += 2*npairs
+        
         flag = 0
         while g.isCyclic():
             flag=1
             g.isCyclic()
         
         if subset == 'cyclic' and flag==0: continue
-        if subset == 'non_cyclic' and flag==1: continue
+        elif subset == 'non_cyclic' and flag==1: continue
            
         if decoder == 'TopoSort': order = g.topologicalSort()        
         elif decoder == 'TSP':
           tensor_test_approx = torch.zeros((1,nvert,nvert))
           tensor_test_exact = torch.zeros((1,nvert+1,nvert+1))
-          for j in range(i2, i2+2*npairs):
+          for j in range(i2-2*npairs, i2):
               d=data_TSP[j]
               if io[int(d[4])]==io[int(d[5])]:
                   continue
@@ -294,8 +297,6 @@ def convert_to_graph(data_TopoSort, data_TSP, decoder, indexing, subset, tsp_sol
         global index
         print(index)
         index = index + 1
-        i1 += npairs
-        i2 += 2*npairs
         
     print('First:',first*100/index,'Last:',last*100/index)
     return stats

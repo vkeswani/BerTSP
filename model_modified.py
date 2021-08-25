@@ -232,7 +232,7 @@ def evaluate_test(args, model, tokenizer, decoder, prefix=""):
     output_mode = "classification"
     
     cached_features_file = os.path.join(args.data_dir, 'cached_{}_{}_{}_{}'.format(
-        'test',
+        'test_'+decoder,
         'bert',
         str(args.max_seq_length),
         'pair_order'))
