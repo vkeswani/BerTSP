@@ -1,5 +1,5 @@
 # BerTSP
-## Formulating Neural Sentence Ordering as the Asymmetric Traveling Salesman Problem (INLG'21)
+## Formulating Neural Sentence Ordering as the Asymmetric Traveling Salesman Problem [(INLG'21)](https://inlg2021.github.io/)
 **Authors**: Vishal Keswani and Harsh Jhamtani
 
 This repository describes the code for our work on Neural Sentence Ordering as ATSP presented at the 14th International Conference on Natural Language Generation. 
