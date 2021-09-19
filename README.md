@@ -4,11 +4,11 @@
 
 This repository describes the code for our work on Neural Sentence Ordering as ATSP presented at the 14th International Conference on Natural Language Generation. 
 
-## Abstract 
+## Abstract [[PDF]](https://aclanthology.org/2021.inlg-1.13.pdf) 
+<!-- [[PPT]](https://iitk-my.sharepoint.com/:p:/g/personal/vkeswani_iitk_ac_in/EcuJV9aQWD9HsRLYA1F2gnsBRKTjbS106TGbNtaS2YUAbg?rtime=7Hinvxlz2Ug) [[Talk]](https://drive.google.com/file/d/1tYGCVqXlCHrQRtIKk4a9gHE5JM34tV6O/view?usp=drivesdk) -->
 The task of Sentence Ordering refers to rearranging a set of given sentences in a coherent ordering. Prior work (Prabhumoye et al., 2020) models this as an optimal graph traversal (with sentences as nodes, and edges as local constraints) using topological sorting. However, such an approach has major limitations – it cannot handle the presence of cycles in the resulting graphs and considers only the binary presence/absence of edges rather than a more granular score. In this work, we propose an alternate formulation of this task as a classic combinatorial optimization problem popular as the Traveling Salesman Problem (or TSP in short). Compared to the previous approach of using topological sorting, our proposed technique gracefully handles the presence of cycles and is more expressive since it takes into account real-valued constraint/edge scores rather than just the presence/absence of edges. Our experiments demonstrate improved handling of such cyclic cases in resulting graphs. Additionally, we highlight how model accuracy can be sensitive to the ordering of input sentences when using such graphsbased formulations. Finally, we note that our approach requires only lightweight fine-tuning of a classification layer built on pre-trained BERT sentence encoder to identify local relationships.
 
-**Full paper:** https://aclanthology.org/2021.inlg-1.13/
-![Image](images/pipeline.png)
+![Image](images/pipeline.PNG)
 
 ## Datasets
 SIND (only SIS is relevant): https://visionandlanguage.net/VIST/dataset.html <br>
