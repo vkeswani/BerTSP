@@ -41,8 +41,8 @@ Given a set of unordered sentences, we calculate the probability of each 'ordere
 &emsp;&emsp;&emsp;&emsp;|___nips_data  <br>
 &emsp;&emsp;|___AAN  *(same as NIPS)*<br>
 &emsp;&emsp;|___NSF  *(same as NIPS)*<br>
-&emsp;&emsp;|___prepare_data.py  <br> 
-&emsp;&emsp;|___model.py  <br>
+&emsp;&emsp;|___prepare_data_modified.py  <br> 
+&emsp;&emsp;|___model_modified.py  <br>
 &emsp;&emsp;|___graph_decoder.py  <br>
 
 ### 2. Data preparation
