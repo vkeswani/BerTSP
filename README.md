@@ -7,7 +7,7 @@ This repository describes the code for our work on Neural Sentence Ordering as A
 ## Abstract 
 The task of Sentence Ordering refers to rearranging a set of given sentences in a coherent ordering. Prior work (Prabhumoye et al., 2020) models this as an optimal graph traversal (with sentences as nodes, and edges as local constraints) using topological sorting. However, such an approach has major limitations – it cannot handle the presence of cycles in the resulting graphs and considers only the binary presence/absence of edges rather than a more granular score. In this work, we propose an alternate formulation of this task as a classic combinatorial optimization problem popular as the Traveling Salesman Problem (or TSP in short). Compared to the previous approach of using topological sorting, our proposed technique gracefully handles the presence of cycles and is more expressive since it takes into account real-valued constraint/edge scores rather than just the presence/absence of edges. Our experiments demonstrate improved handling of such cyclic cases in resulting graphs. Additionally, we highlight how model accuracy can be sensitive to the ordering of input sentences when using such graphsbased formulations. Finally, we note that our approach requires only lightweight fine-tuning of a classification layer built on pre-trained BERT sentence encoder to identify local relationships.
 
-**Full paper:** Link will be added soon.
+**Full paper:** https://aclanthology.org/2021.inlg-1.13/
 
 ## Datasets
 SIND (only SIS is relevant): https://visionandlanguage.net/VIST/dataset.html <br>
@@ -105,5 +105,19 @@ python graph_decoder.py --file_path ../nips_data/ --decoder TSP --indexing rever
 
 ## BibTeX
 Use the following to cite the paper or code.<br>
-**Citation will be added soon.**
+```
+@inproceedings{keswani-jhamtani-2021-formulating,
+    title = "Formulating Neural Sentence Ordering as the Asymmetric Traveling Salesman Problem",
+    author = "Keswani, Vishal  and
+      Jhamtani, Harsh",
+    booktitle = "Proceedings of the 14th International Conference on Natural Language Generation",
+    month = aug,
+    year = "2021",
+    address = "Aberdeen, Scotland, UK",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.inlg-1.13",
+    pages = "128--139",
+    abstract = "The task of Sentence Ordering refers to rearranging a set of given sentences in a coherent ordering. Prior work (Prabhumoye et al., 2020) models this as an optimal graph traversal (with sentences as nodes, and edges as local constraints) using topological sorting. However, such an approach has major limitations {--} it cannot handle the presence of cycles in the resulting graphs and considers only the binary presence/absence of edges rather than a more granular score. In this work, we propose an alternate formulation of this task as a classic combinatorial optimization problem popular as the Traveling Salesman Problem (or TSP in short). Compared to the previous approach of using topological sorting, our proposed technique gracefully handles the presence of cycles and is more expressive since it takes into account real-valued constraint/edge scores rather than just the presence/absence of edges. Our experiments demonstrate improved handling of such cyclic cases in resulting graphs. Additionally, we highlight how model accuracy can be sensitive to the ordering of input sentences when using such graphs-based formulations. Finally, we note that our approach requires only lightweight fine-tuning of a classification layer built on pretrained BERT sentence encoder to identify local relationships.",
+}
+```
 
